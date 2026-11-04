@@ -145,22 +145,4 @@ function leaveRoom(socket) {
 
 httpServer.listen(PORT, "0.0.0.0", () => {
   console.log(`Hollow Fight server listening on ${PORT}`);
-});const socket = new WebSocket('ws://localhost:8080');
-socket.onopen = () => console.log('Conectado!');
-socket.onmessage = (e) => {
-  const msg = JSON.parse(e.data);
-  // atualize o jogo com a ação do outro jogador
-};
-function enviar(acao) {
-  socket.send(JSON.stringify(acao)); // ex: {tipo:'ataque', alvo:'boss'}
-}const { WebSocketServer } = require('ws');
-const wss = new WebSocketServer({ port: 8080 });
-
-wss.on('connection', (ws) => {
-  ws.on('message', (data) => {
-    // repassa a mensagem para os outros jogadores
-    wss.clients.forEach((c) => {
-      if (c !== ws && c.readyState === 1) c.send(data.toString());
-    });
-  });
 });
