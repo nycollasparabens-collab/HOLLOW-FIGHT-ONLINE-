@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hollow Fight — Painel do Criador</title>
+<style>
+body{font-family:Arial,sans-serif;background:#111;color:#fff;max-width:650px;margin:35px auto;padding:20px}
+main{background:#222;padding:24px;border:1px solid #555;border-radius:12px}
+input,textarea{box-sizing:border-box;width:100%;padding:12px;margin:8px 0 16px;background:#111;color:#fff;border:1px solid #777;border-radius:6px}
+button{padding:12px 18px;background:#b21d36;color:white;border:0;border-radius:6px;font-weight:bold}
+small{color:#bbb}#status{margin-top:15px}
+</style></head>
+<body><main>
+<h1>⚙️ HOLLOW FIGHT</h1><h2>Painel do Criador</h2>
+<p>Este painel envia um aviso aos jogadores conectados. Para publicar o código novo, faça commit/push no GitHub; o Render fará o deploy.</p>
+<label>Token de administrador</label><input id="token" type="password" autocomplete="off">
+<label>Versão</label><input id="version" placeholder="Ex.: 1.1.0">
+<label>Novidades</label><textarea id="notes" rows="6" placeholder="• Novo chefe&#10;• Novos ataques&#10;• Correções"></textarea>
+<button id="send">AVISAR JOGADORES</button><p id="status"></p>
+<script>
+document.getElementById("send").onclick=async()=>{
+ const status=document.getElementById("status");status.textContent="Enviando...";
+ try{
+  const r=await fetch("/api/admin/announce",{method:"POST",headers:{
+   "Content-Type":"application/json","Authorization":"Bearer "+document.getElementById("token").value
+  },body:JSON.stringify({version:document.getElementById("version").value,notes:document.getElementById("notes").value})});
+  const j=await r.json();if(!r.ok)throw new Error(j.error||"Falha");
+  status.textContent="Aviso enviado aos jogadores online!";
+ }catch(e){status.textContent="Erro: "+e.message;}
+};
+</script></main></body></html>
